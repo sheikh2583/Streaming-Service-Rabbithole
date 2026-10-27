@@ -1,4 +1,6 @@
-# Openwave
+# Streaming-Service-Rabbithole
+
+Openwave is the streaming experience included in this project.
 
 A responsive, free-to-watch streaming frontend you can host yourself. Includes HLS and MP4 playback, native volume/fullscreen controls, adaptive HLS quality selection, picture-in-picture where supported, search, category filters, browser-local bookmarks, and shareable stream links.
 
