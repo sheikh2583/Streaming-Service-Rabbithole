@@ -1,10 +1,19 @@
 # Streaming-Service-Rabbithole
 
-Openwave is the streaming experience included in this project.
+Openwave is a minimal, self-hostable live television website. Opening the site starts the selected channel automatically, muted to comply with browser autoplay rules. Click **Turn sound on** to enable audio.
 
-A responsive, free-to-watch streaming frontend you can host yourself. Includes HLS and MP4 playback, native volume/fullscreen controls, adaptive HLS quality selection, picture-in-picture where supported, search, category filters, browser-local bookmarks, and shareable stream links.
+## Included live channels
 
-## Run locally
+- DW English
+- Red Bull TV
+- DW Español
+- DW Deutsch
+
+These are continuous HLS broadcasts, not demo recordings or MP4 files. The channels follow the broadcasters' schedules and can air recorded programs between live events. Availability can vary by region or change over time. Each channel links to its official broadcaster. Video is loaded directly from the broadcaster, not relayed or encoded by this application.
+
+The interface contains only the player and live-channel choices. It includes quality selection when multiple qualities exist, volume and fullscreen controls, a Go live button, picture-in-picture on supported browsers, shareable channel links, and reconnect controls. Playback status reflects actual player events. HLS playlists that are no longer live are rejected.
+
+## Run
 
 Requires Node.js 20.19+ or 22+.
 
@@ -13,48 +22,34 @@ npm install
 npm run dev
 ```
 
-## Add your streams
-
-Edit `src/streams.js`. Each entry includes a title, category, description, image, source URL, and `type` (`hls` or `mp4`). Use an HTTPS `.m3u8` endpoint from your streaming server or provider for live broadcasts. Configure the endpoint to allow cross-origin requests from your website. A live playlist must be continuously updated by the streaming server.
-
-The supplied entries are public sample videos with illustrative photography. The HLS sample is an on-demand test playlist, not a live broadcast. The live-stream tab currently lists HLS sources. Replace the entries with content you own or have permission to share. Customize categories in `src/main.js` if needed. The schedule has an honest empty state until you implement upcoming broadcasts.
-
-## Host it
-
-```sh
-npm run build
-```
-
-Upload the contents of `dist/` to any static web host, Nginx, Apache, or object storage with website hosting. No Node process is needed in production. Serve over HTTPS for clipboard sharing and picture-in-picture browser features. `npm run preview` serves the production build locally for review.
-
-This app is the viewing frontend. You supply the live encoder, streaming server/CDN, bandwidth, and broadcast sources; it does not relay or encode video. Free viewing does not mean free hosting or bandwidth.
-
-The build uses relative asset paths, supporting both domain-root and subdirectory hosting.
-
-## Privacy and persistence
-
-Bookmarks live in localStorage in each visitor's browser. No account, chat service, analytics, fake viewers, or backend is included. Google Fonts, Unsplash cover photos, and the sample video hosts are external resources; self-host assets if you need to avoid these requests.
-
-## Project structure
-
-- `src/streams.js`: replaceable stream catalog and photo helper
-- `src/main.js`: navigation, search, player, sharing, and bookmarks
-- `src/style.css`: responsive layout and theme
-- `index.html`: page title, metadata, and fonts
-
-## Share with ngrok
-
-Install the official ngrok agent and configure your account authtoken locally. Do not commit or share your token.
+## Production
 
 ```sh
 npm run build
 npm start
 ```
 
-In a second terminal:
+The server listens on `127.0.0.1:4173` and exposes only `dist/`. You can also upload the contents of `dist/` to a static web host. The build supports domain-root and subdirectory hosting through relative asset paths. Use HTTPS for clipboard sharing and browser media features.
+
+## Share without an account
+
+With the production server running, use the official Cloudflare agent:
 
 ```sh
-ngrok http 4173
+cloudflared tunnel --url http://127.0.0.1:4173
 ```
 
-Share the HTTPS forwarding URL shown by ngrok. The app server binds to loopback; the tunnel exposes only the production `dist/` output. Keep both processes and your computer running for the link to work. Ngrok account limits apply. Video traffic goes directly from each viewer to the configured stream provider.
+Share the HTTPS URL printed by the tunnel. This temporary preview URL requires the computer, app server, and tunnel to stay running; it is not permanent production hosting.
+
+## Configure channels
+
+Edit `src/streams.js`. Include the broadcaster name, description, category, language, official source page, and an HTTPS HLS URL that allows cross-origin requests. Include only content you own or have permission to share, or public broadcaster feeds offered for viewing. Update channels when upstream endpoints change.
+
+## Files
+
+- `src/streams.js`: live-channel catalog
+- `src/main.js`: autoplay, channel switching, player controls, sharing
+- `src/style.css`: responsive interface
+- `server.js`: production static server
+
+No account service, analytics, chat, collection, or schedule screen is included. Video providers, Google Fonts, and Unsplash receive requests to load their resources. Cover images are illustrative, not snapshots of the current broadcast.
