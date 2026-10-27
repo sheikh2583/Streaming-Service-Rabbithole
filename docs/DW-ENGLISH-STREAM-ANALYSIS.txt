@@ -1,0 +1,146 @@
+DW English: stream delivery and player processing
+
+Developer handoff · inspected 27 October 2026 at 18:24:44 Asia/Dhaka (12:24:44 UTC).
+
+What this application does
+
+Openwave is a browser-based HLS player and channel directory. DW publishes the broadcast, and its Akamai CDN delivers playlists and video segments directly to each viewer. Our Node server serves the built website. It does not ingest, relay, encode, transcode, record, or redistribute a single shared outgoing video feed.
+
+Each viewer independently connects to DW. Sharing our website shares the player and channel selection; it does not create a new broadcast URL.
+
+Links and ownership
+
+Item  |  URL / value  |  Purpose
+Official broadcaster page  |  https://www.dw.com/en/live-tv/channel-english  |  Human-facing source and attribution
+HLS entry point  |  https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8  |  Machine-readable master playlist used by the app
+Example quality playlist  |  https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/streamPlaylist.m3u8  |  Rolling playlist for the sampled 270p rendition
+App channel ID  |  dw-english  |  Stable key in our channel catalog
+Shareable app URL  |  https://wan-audio-magical-baseball.trycloudflare.com/?watch=dw-english  |  Opens the app and selects this channel; temporary tunnel hostname
+Player library  |  hls.js 1.7.3, installed from the lockfile  |  HLS playback in supported browsers
+
+The official DW page was fetched separately and contained this exact master URL. See official source evidence (https://github.com/sheikh2583/Streaming-Service-Rabbithole/blob/main/docs/evidence/dw-english/official-link.json). Access to a public endpoint is an availability observation, not a redistribution license or uptime commitment.
+
+The hostname identifies Akamai delivery. The remaining path components identify the provider's HLS service, event, and stream. Treat those identifiers as opaque configuration. Do not construct new URLs by guessing stream numbers. Resolve child playlists and segments from the URLs actually present in the manifests. Individual segment URLs expire from the rolling window and are unsuitable as permanent share links.
+
+Data flow
+
+DELIVERY FLOW
+
+Viewer browser -> Cloudflare tunnel -> Openwave server (port 4173)
+                                      Returns website HTML, JavaScript, CSS
+
+Viewer browser / hls.js -> DW / Akamai CDN
+  1. Fetch master.m3u8 (quality options).
+  2. Fetch the chosen quality playlist (rolling segment list).
+  3. Fetch media segments and refresh the playlist repeatedly.
+  4. Parse and transmux media inside the browser.
+  5. Append media to the browser playback buffer.
+  6. Browser decodes video and audio for the viewer.
+
+Video goes directly from the broadcaster CDN to the viewer.
+Our server and Cloudflare tunnel carry website assets, not video.
+
+
+The first broadcaster-side stages—studio production, encoding, packaging, and CDN origin publishing—are inferred from the delivered HLS artifacts. We did not inspect DW's internal production or origin infrastructure. The observable boundary starts at DW's published HTTPS endpoints.
+
+The Cloudflare tunnel carries the website's static assets. Broadcaster video requests do not pass through the tunnel or server.js. The blob: URL on the playing <video> element is a temporary browser MediaSource reference, not a recording uploaded to our server.
+
+What the link returns
+
+The master is UTF-8 HLS playlist text, not a video file. Its EXT-X-STREAM-INF entries describe selectable renditions. In the captured response there were ten variant entries: five qualities, each offered through two alternate provider paths (2015525 and 2015525-b). These are not ten different channels.
+
+Quality  |  Dimensions  |  Advertised average bandwidth  |  Advertised peak bandwidth  |  Frame rate
+270p  |  480 × 270  |  884,428 bit/s  |  1,061,313 bit/s  |  50 fps
+360p  |  640 × 360  |  1,384,428 bit/s  |  1,661,313 bit/s  |  50 fps
+540p  |  960 × 540  |  1,784,428 bit/s  |  2,141,313 bit/s  |  50 fps
+720p  |  1280 × 720  |  3,384,428 bit/s  |  4,061,313 bit/s  |  50 fps
+1080p  |  1920 × 1080  |  5,184,428 bit/s  |  6,221,313 bit/s  |  50 fps
+
+These are manifest declarations, not measured per-viewer throughput. The master also advertises English WebVTT subtitle groups. The app does not implement a custom subtitle selector.
+
+The sampled quality playlist contained 308 segments totaling 1,800 seconds, a rolling 30-minute window. EXT-X-TARGETDURATION was six seconds. Most segments were six seconds; shorter segments were also present. EXT-X-PROGRAM-DATE-TIME associates media with UTC wall-clock time. The oldest timestamp describes the start of the available window, not the current live edge.
+
+HTTP and segment measurements
+
+Resource  |  HTTP status  |  Content type  |  CORS  |  Cache policy
+Master  |  200  |  application/vnd.apple.mpegurl  |  Access-Control-Allow-Origin: *  |  max-age=0, no-cache, no-store
+Quality playlist  |  200  |  application/vnd.apple.mpegurl  |  *  |  max-age=0, no-cache, no-store
+Sampled segment  |  200  |  video/MP2T  |  *  |  public, max-age=1800
+
+The requests included our public site's Origin header. Browser playback was verified separately. No login, cookie, bearer token, signed query parameter, or decryption key was required by the sampled requests. This says nothing about other channels, future policy, or geographic availability.
+
+A temporary sample of one latest 270p segment was inspected with ffprobe, then deleted:
+
+- Size: 630,176 bytes; duration: approximately 6.011 seconds.
+- Container: MPEG transport stream; initial sync byte: 0x47.
+- Video: H.264 Main profile, 480 × 270, 50 fps.
+- Audio: AAC-LC, 48 kHz, two channels.
+- Sampled container bitrate: approximately 838,743 bit/s.
+- Playlist encryption tags: METHOD=NONE in the sampled rendition. HTTPS still encrypts network transport. We did not audit every rendition for encryption.
+
+Evidence that it is an updating broadcast
+
+Two media playlist responses, 8.38 seconds apart, showed:
+
+Measurement  |  First  |  Second
+Media sequence  |  298850368  |  298850369
+Final segment sequence  |  298850675  |  298850676
+Window length  |  1,800 seconds  |  1,800 seconds
+EXT-X-ENDLIST present  |  No  |  No
+
+The leading sequence advanced and new media appeared while the oldest media left the window. This supports an actively updating live delivery stream. An HTTP 200 master response alone would not establish this; child playlists or segments can still fail.
+
+A continuous TV broadcast can contain interviews, documentaries, or scheduled replays filmed earlier. HLS delivery liveness does not prove that every scene is being captured at this instant.
+
+What our code does to it
+
+Implementation: catalog (https://github.com/sheikh2583/Streaming-Service-Rabbithole/blob/main/src/streams.js), player (https://github.com/sheikh2583/Streaming-Service-Rabbithole/blob/main/src/main.js), static server (https://github.com/sheikh2583/Streaming-Service-Rabbithole/blob/main/server.js), build config (https://github.com/sheikh2583/Streaming-Service-Rabbithole/blob/main/vite.config.js).
+
+1. Select the channel. Read ?watch=dw-english; if absent or unknown, select the first catalog entry. The catalog supplies title, language, artwork, description, official page, and HLS URL. This is static metadata, not an electronic program guide or live thumbnail feed.
+2. Clean up previous playback. openChannel() destroys the old HLS instance, pauses and resets the video element, and increments generation. HLS callbacks from a previous selection are ignored.
+3. Attach a player. On the hls.js path, instantiate new Hls({maxLiveSyncPlaybackRate:1.2}), call loadSource(source), and attachMedia(video).
+4. Parse and request. hls.js reads the master, selects a rendition, loads its playlist, fetches segments, and refreshes the rolling playlist. Auto quality uses the library's adaptive selection; manual selection sets hls.currentLevel.
+5. Prepare browser media. For this MPEG-TS/H.264/AAC feed, hls.js transmuxes the existing compressed audio/video into fragmented MP4 for MediaSource playback. Transmuxing changes packaging, not the encoded pictures or codec. The browser decodes and displays the content. Our application does not draw or re-encode frames.
+6. Start playback. MANIFEST_PARSED populates quality choices and calls video.play(). The element starts muted with autoplay and playsinline. A rejected play request produces “Press play to start.” The sound button unmutes after user interaction.
+7. Enforce live playlists. LEVEL_LOADED checks data.details.live; a non-live playlist stops loading and displays an error. The native HLS fallback does not perform this hls.js-specific check.
+8. Reflect player events. playing → “Live”; waiting → “Buffering…”; pause → “Paused”. Fatal HLS media errors trigger one recoverMediaError() attempt; other fatal failures show “Unavailable”. Reconnect creates a fresh player for the same source. Nonfatal errors remain under library handling.
+9. Return toward the live edge. “Go live” seeks to hls.liveSyncPosition; native fallback uses the final seekable endpoint minus three seconds. The 1.2 configuration permits the library to accelerate playback up to 1.2× when catching up; it does not permanently force 1.2× speed.
+10. Share selection. The Share button copies our page URL. Another viewer creates a separate connection to the same broadcaster. Their quality, buffer, and exact playback position may differ.
+
+If hls.js support is unavailable but the browser reports native HLS support, the app assigns the playlist URL directly to video.src. That path uses browser-native loading and adaptation; our hls.js quality menu is unavailable. Neither support path produces a new stream on our infrastructure.
+
+The installed hls.js ESM entry is dist/hls.mjs. Its local README states that this ESM build does not bundle the transmuxer worker. We do not configure workerPath; do not assume processing is in a separate worker just because the library default enableWorker is true. Worker offloading requires explicit setup and verification for this build.
+
+Playback, latency, and scaling limits
+
+A separate browser DOM sample confirmed muted autoplay, paused=false, readyState=4, no media error, and 1920 × 1080 decoded video. The video source was a same-origin blob: MediaSource URL. See browser sample (https://github.com/sheikh2583/Streaming-Service-Rabbithole/blob/main/docs/evidence/dw-english/browser.json).
+
+At that sample, currentTime was 1795.081 seconds and the reported seekable end was 1944.077 seconds—about 149 seconds apart on the browser timeline. This is an observed distance from a reported seekable endpoint, not a measured camera-to-screen delay or a guaranteed server live edge. The app's “Live” status means the live channel is playing; it does not verify a proximity threshold. Measure hls.latency, target latency, playlist edge and program date/time before making latency claims. Consider a separate “Behind live” indicator.
+
+The sampled manifest uses standard multi-second segments, without observed low-latency HLS part tags. This is not a subsecond WebRTC broadcast. The library's default three-target-duration sync policy would nominally start around 18 seconds behind the playlist edge with six-second segments, subject to manifest hold-back, stalls, buffering, and other library behavior. That is not a measured end-to-end delay.
+
+At the manifest's 1080p average, media transfer is roughly 2.33 GB per viewer-hour (decimal GB), excluding overhead and quality changes. DW's CDN carries that traffic; our host/tunnel carries the website assets. Concurrent viewers therefore do not multiply video egress on server.js, but they do multiply upstream broadcaster requests. Upstream permission, capacity, geography, endpoint stability, and service terms remain external dependencies. The current Cloudflare Quick Tunnel also depends on this computer and both running processes.
+
+Reproduce and debug
+
+python3 scripts/inspect_stream.py --output /tmp/openwave-dw-inspection
+
+
+Uses Python's standard library; optional ffprobe adds codec inspection. It fetches the master, selects the first advertised quality, saves two playlist snapshots, tests one segment using at most 2 MB of its body, and writes JSON metadata. The sampled media file is temporary and deleted. Run against public or authorized endpoints only. The saved results describe one rendition and one observation window, not a full stream audit. A failed fetch exits with an error; it does not report a false health result.
+
+In browser DevTools → Network, filter m3u8 and .ts: expect a master request, repeated selected-quality playlist requests, and successive segment requests to the DW/Akamai host. Search the app host separately: it should serve HTML/JS/CSS, without an app-host video proxy route. Audio and video are multiplexed in the sampled TS segment. Subtitle requests may appear when enabled.
+
+For failures, inspect the child playlist and segment, CORS responses, HTTP status, and codec compatibility. A frozen playlist without ENDLIST can still pass our current details.live check. For production, add sequence-freshness checks, live-edge metrics, startup/stall telemetry, and a monitor for source endpoint changes. No monitoring backend or analytics ingestion currently exists.
+
+Evidence and references
+
+Captured evidence is in evidence/dw-english/ (https://github.com/sheikh2583/Streaming-Service-Rabbithole/blob/main/docs/evidence/dw-english): report.json, master.txt, media-first.txt, media-second.txt, browser.json, and official-link.json. Segment URLs and manifest contents are historical snapshots and will age out. No video recording is committed.
+
+Protocol and implementation references:
+
+- DW's official live page (https://www.dw.com/en/live-tv/channel-english)
+- hls.js documentation for the installed version (https://github.com/video-dev/hls.js/tree/v1.7.3/docs)
+- hls.js source and playback architecture (https://github.com/video-dev/hls.js/tree/v1.7.3)
+- Apple HTTP Live Streaming (https://developer.apple.com/documentation/http-live-streaming)
+
+Provider facts above come from captured HTTP responses and the sampled media. Application behavior comes from the checked-in code. Internal broadcaster stages and unmeasured operational behavior are identified as inference or limitations.
