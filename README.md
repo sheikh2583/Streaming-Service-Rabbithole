@@ -53,3 +53,7 @@ Edit `src/streams.js`. Include the broadcaster name, description, category, lang
 - `server.js`: production static server
 
 No account service, analytics, chat, collection, or schedule screen is included. Video providers, Google Fonts, and Unsplash receive requests to load their resources. Cover images are illustrative, not snapshots of the current broadcast.
+
+## Developer stream analysis
+
+See [DW English stream delivery and processing](docs/DW-ENGLISH-STREAM-ANALYSIS.md) for the verified source URL, request flow, codec/quality data, player processing, latency limitations, captured evidence, and a repeatable inspection command.

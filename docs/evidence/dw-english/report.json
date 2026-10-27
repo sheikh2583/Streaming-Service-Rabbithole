@@ -1,0 +1,249 @@
+{
+  "observed_at_utc": "2026-10-27T12:24:44.299501+00:00",
+  "source": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8",
+  "master_response": {
+    "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8",
+    "status": 200,
+    "headers": {
+      "content-type": "application/vnd.apple.mpegurl",
+      "content-length": "3106",
+      "access-control-allow-origin": "*",
+      "cache-control": "max-age=0, no-cache, no-store",
+      "date": "Tue, 27 Oct 2026 12:24:44 GMT",
+      "etag": "W/\"ddcda7209dcf283e06dacc6c87e90157121\""
+    }
+  },
+  "variants": [
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "1061313",
+      "AVERAGE-BANDWIDTH": "884428",
+      "CODECS": "avc1.4D401F,mp4a.40.2",
+      "RESOLUTION": "480x270",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "1061313",
+      "AVERAGE-BANDWIDTH": "884428",
+      "CODECS": "avc1.4D401F,mp4a.40.2",
+      "RESOLUTION": "480x270",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt-b",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525-b/dwstream102/stream01/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "1661313",
+      "AVERAGE-BANDWIDTH": "1384428",
+      "CODECS": "avc1.4D401F,mp4a.40.2",
+      "RESOLUTION": "640x360",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream02/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "1661313",
+      "AVERAGE-BANDWIDTH": "1384428",
+      "CODECS": "avc1.4D401F,mp4a.40.2",
+      "RESOLUTION": "640x360",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt-b",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525-b/dwstream102/stream02/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "2141313",
+      "AVERAGE-BANDWIDTH": "1784428",
+      "CODECS": "avc1.4D4020,mp4a.40.2",
+      "RESOLUTION": "960x540",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream03/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "2141313",
+      "AVERAGE-BANDWIDTH": "1784428",
+      "CODECS": "avc1.4D4020,mp4a.40.2",
+      "RESOLUTION": "960x540",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt-b",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525-b/dwstream102/stream03/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "4061313",
+      "AVERAGE-BANDWIDTH": "3384428",
+      "CODECS": "avc1.640029,mp4a.40.2",
+      "RESOLUTION": "1280x720",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream04/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "4061313",
+      "AVERAGE-BANDWIDTH": "3384428",
+      "CODECS": "avc1.640029,mp4a.40.2",
+      "RESOLUTION": "1280x720",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt-b",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525-b/dwstream102/stream04/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "6221313",
+      "AVERAGE-BANDWIDTH": "5184428",
+      "CODECS": "avc1.64002A,mp4a.40.2",
+      "RESOLUTION": "1920x1080",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream05/streamPlaylist.m3u8"
+    },
+    {
+      "PROGRAM-ID": "1",
+      "BANDWIDTH": "6221313",
+      "AVERAGE-BANDWIDTH": "5184428",
+      "CODECS": "avc1.64002A,mp4a.40.2",
+      "RESOLUTION": "1920x1080",
+      "FRAME-RATE": "50.000",
+      "SUBTITLES": "subs_wvtt-b",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525-b/dwstream102/stream05/streamPlaylist.m3u8"
+    }
+  ],
+  "media_response": {
+    "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/streamPlaylist.m3u8",
+    "status": 200,
+    "headers": {
+      "content-type": "application/vnd.apple.mpegurl",
+      "access-control-allow-origin": "*",
+      "cache-control": "max-age=0, no-cache, no-store",
+      "date": "Tue, 27 Oct 2026 12:24:45 GMT",
+      "etag": "W/\"0c25232bb0e32f8a733be802f8aed22d986\""
+    }
+  },
+  "first": {
+    "sequence": 298850368,
+    "target_duration_seconds": "6",
+    "playlist_type": null,
+    "has_endlist": false,
+    "program_date_time": "2026-10-27T11:54:42.070Z",
+    "window_seconds": 1800.0,
+    "segment_count": 308,
+    "first_segment_url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/20261027T073423/ts/149425/sequence_298850368.ts",
+    "last_segment_url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/20261027T073423/ts/149425/sequence_298850675.ts",
+    "key_tags": [
+      "METHOD=NONE"
+    ],
+    "segment_duration_counts": {
+      "6.0": 292,
+      "4.12": 4,
+      "1.88": 4,
+      "2.12": 4,
+      "3.88": 4
+    }
+  },
+  "segment_response": {
+    "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/20261027T073423/ts/149425/sequence_298850675.ts",
+    "status": 200,
+    "headers": {
+      "content-type": "video/MP2T",
+      "content-length": "630176",
+      "access-control-allow-origin": "*",
+      "cache-control": "public, max-age=1800",
+      "date": "Tue, 27 Oct 2026 12:24:46 GMT",
+      "etag": "W/\"0c25232bb0e32f8a733be802f8aed22d000\""
+    }
+  },
+  "segment_sample_bytes": 630176,
+  "mpeg_ts_sync_byte": "47",
+  "ffprobe": {
+    "programs": [
+      {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "profile": "Main",
+            "codec_type": "video",
+            "width": 480,
+            "height": 270,
+            "r_frame_rate": "50/1"
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "profile": "LC",
+            "codec_type": "audio",
+            "sample_rate": "48000",
+            "channels": 2,
+            "r_frame_rate": "0/0"
+          }
+        ]
+      }
+    ],
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "profile": "Main",
+        "codec_type": "video",
+        "width": 480,
+        "height": 270,
+        "r_frame_rate": "50/1"
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "profile": "LC",
+        "codec_type": "audio",
+        "sample_rate": "48000",
+        "channels": 2,
+        "r_frame_rate": "0/0"
+      }
+    ],
+    "format": {
+      "format_name": "mpegts",
+      "duration": "6.010666",
+      "bit_rate": "838743"
+    }
+  },
+  "media_second_response": {
+    "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/streamPlaylist.m3u8",
+    "status": 200,
+    "headers": {
+      "content-type": "application/vnd.apple.mpegurl",
+      "access-control-allow-origin": "*",
+      "cache-control": "max-age=0, no-cache, no-store",
+      "date": "Tue, 27 Oct 2026 12:24:53 GMT",
+      "etag": "W/\"5c0e0a5ddaf4c4865c5449ae6593c08f202\""
+    }
+  },
+  "second": {
+    "sequence": 298850369,
+    "target_duration_seconds": "6",
+    "playlist_type": null,
+    "has_endlist": false,
+    "program_date_time": "2026-10-27T11:54:48.070Z",
+    "window_seconds": 1800.0,
+    "segment_count": 308,
+    "first_segment_url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/20261027T073423/ts/149425/sequence_298850369.ts",
+    "last_segment_url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/20261027T073423/ts/149425/sequence_298850676.ts",
+    "key_tags": [
+      "METHOD=NONE"
+    ],
+    "segment_duration_counts": {
+      "6.0": 292,
+      "4.12": 4,
+      "1.88": 4,
+      "2.12": 4,
+      "3.88": 4
+    }
+  },
+  "sequence_advanced": true,
+  "observation_interval_seconds": 8.38
+}

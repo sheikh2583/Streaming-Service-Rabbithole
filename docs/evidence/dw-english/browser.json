@@ -1,0 +1,27 @@
+{
+  "note": "Separate browser DOM sample during the investigation; times are playback-timeline positions, not wall-clock capture latency. Blob UUID omitted because it is temporary.",
+  "url": "https://wan-audio-magical-baseball.trycloudflare.com/?watch=dw-english",
+  "current_src_scheme": "blob:",
+  "autoplay": true,
+  "muted": true,
+  "paused": false,
+  "ready_state": 4,
+  "current_time_seconds": 1795.081484,
+  "duration_seconds": 1944.0773333333336,
+  "video_width": 1920,
+  "video_height": 1080,
+  "buffered": [
+    {
+      "start": 1782.125329,
+      "end": 1896.04
+    }
+  ],
+  "seekable": [
+    {
+      "start": 0,
+      "end": 1944.0773333333336
+    }
+  ],
+  "playback_rate": 1,
+  "error": null
+}
