@@ -1,10 +1,74 @@
 // Public broadcaster HLS channels. No sample files or on-demand playlists.
 // Keep the broadcaster attribution and official source link with each entry.
 export const streams = [
- {id:'dw-english',title:'DW English',subtitle:'A global perspective, live from Germany.',category:'News',language:'English',image:'photo-1519608487953-e999c86e7455',description:'Watch Deutsche Welle’s English television broadcast as it airs, with international news, interviews, and reports.',source:'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8',official:'https://www.dw.com/en/live-tv/channel-english',type:'hls',live:true,duration:'English',credit:'Deutsche Welle'},
- {id:'red-bull',title:'Red Bull TV',subtitle:'Action sports. Adventure. On air.',category:'Sports',language:'English',image:'photo-1469854523086-cc02fe5d8800',description:'Watch the continuous Red Bull TV channel. Event coverage and scheduled sports programming are selected by the broadcaster; a live channel may also air previously recorded shows.',source:'https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8',official:'https://www.redbull.com/int-en/live',type:'hls',live:true,duration:'English',credit:'Red Bull Media House'},
- {id:'dw-espanol',title:'DW Español',subtitle:'Una mirada global, en directo.',category:'News',language:'Español',image:'photo-1518837695005-2083093ee35b',description:'Watch Deutsche Welle’s Spanish-language channel as it airs, with international news and current affairs.',source:'https://dwamdstream104.akamaized.net/hls/live/2015530/dwstream104/index.m3u8',official:'https://www.dw.com/es/tv-en-vivo/s-100825',type:'hls',live:true,duration:'Español',credit:'Deutsche Welle'},
- {id:'dw-deutsch',title:'DW Deutsch',subtitle:'Nachrichten und Perspektiven, live.',category:'News',language:'Deutsch',image:'photo-1464822759023-fed622ff2c3b',description:'Tune into Deutsche Welle’s German channel for its current television broadcast. Programs and language slots follow the broadcaster’s schedule.',source:'https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/index.m3u8',official:'https://www.dw.com/de/tv-live/s-100817',type:'hls',live:true,duration:'Deutsch',credit:'Deutsche Welle'}
+  {
+    id: "dw-english",
+    title: "DW English",
+    subtitle: "A global perspective, live from Germany.",
+    category: "News",
+    language: "English",
+    image: "photo-1519608487953-e999c86e7455",
+    description:
+      "Watch Deutsche Welle’s English television broadcast as it airs, with international news, interviews, and reports.",
+    source:
+      "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8",
+    official: "https://www.dw.com/en/live-tv/channel-english",
+    type: "hls",
+    live: true,
+    duration: "English",
+    credit: "Deutsche Welle",
+  },
+  {
+    id: "red-bull",
+    title: "Red Bull TV",
+    subtitle: "Action sports. Adventure. On air.",
+    category: "Sports",
+    language: "English",
+    image: "photo-1469854523086-cc02fe5d8800",
+    description:
+      "Watch the continuous Red Bull TV channel. Event coverage and scheduled sports programming are selected by the broadcaster; a live channel may also air previously recorded shows.",
+    source:
+      "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8",
+    official: "https://www.redbull.com/int-en/live",
+    type: "hls",
+    live: true,
+    duration: "English",
+    credit: "Red Bull Media House",
+  },
+  {
+    id: "dw-espanol",
+    title: "DW Español",
+    subtitle: "Una mirada global, en directo.",
+    category: "News",
+    language: "Español",
+    image: "photo-1518837695005-2083093ee35b",
+    description:
+      "Watch Deutsche Welle’s Spanish-language channel as it airs, with international news and current affairs.",
+    source:
+      "https://dwamdstream104.akamaized.net/hls/live/2015530/dwstream104/index.m3u8",
+    official: "https://www.dw.com/es/tv-en-vivo/s-100825",
+    type: "hls",
+    live: true,
+    duration: "Español",
+    credit: "Deutsche Welle",
+  },
+  {
+    id: "dw-deutsch",
+    title: "DW Deutsch",
+    subtitle: "Nachrichten und Perspektiven, live.",
+    category: "News",
+    language: "Deutsch",
+    image: "photo-1464822759023-fed622ff2c3b",
+    description:
+      "Tune into Deutsche Welle’s German channel for its current television broadcast. Programs and language slots follow the broadcaster’s schedule.",
+    source:
+      "https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/index.m3u8",
+    official: "https://www.dw.com/de/tv-live/s-100817",
+    type: "hls",
+    live: true,
+    duration: "Deutsch",
+    credit: "Deutsche Welle",
+  },
 ];
-export const site = {name:'Openwave', tagline:'A world worth watching. Live.'};
-export const photo = (id,width=800) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`;
+export const photo = (id, width = 800) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`;

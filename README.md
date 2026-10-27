@@ -57,3 +57,5 @@ No account service, analytics, chat, collection, or schedule screen is included.
 ## Developer stream analysis
 
 See [DW English stream delivery and processing](docs/DW-ENGLISH-STREAM-ANALYSIS.md) for the verified source URL, request flow, codec/quality data, player processing, latency limitations, captured evidence, and a repeatable inspection command.
+
+A [copyable plain-text version](docs/DW-ENGLISH-STREAM-ANALYSIS.txt) is also available.

@@ -10,14 +10,14 @@ Each viewer independently connects to DW. Sharing our website shares the player 
 
 ## Links and ownership
 
-| Item | URL / value | Purpose |
-| --- | --- | --- |
-| Official broadcaster page | https://www.dw.com/en/live-tv/channel-english | Human-facing source and attribution |
-| HLS entry point | https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8 | Machine-readable master playlist used by the app |
-| Example quality playlist | https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/streamPlaylist.m3u8 | Rolling playlist for the sampled 270p rendition |
-| App channel ID | `dw-english` | Stable key in our channel catalog |
-| Shareable app URL | https://wan-audio-magical-baseball.trycloudflare.com/?watch=dw-english | Opens the app and selects this channel; temporary tunnel hostname |
-| Player library | `hls.js` **1.7.3**, installed from the lockfile | HLS playback in supported browsers |
+| Item                      | URL / value                                                                                    | Purpose                                                           |
+| ------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Official broadcaster page | https://www.dw.com/en/live-tv/channel-english                                                  | Human-facing source and attribution                               |
+| HLS entry point           | https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8                  | Machine-readable master playlist used by the app                  |
+| Example quality playlist  | https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream01/streamPlaylist.m3u8 | Rolling playlist for the sampled 270p rendition                   |
+| App channel ID            | `dw-english`                                                                                   | Stable key in our channel catalog                                 |
+| Shareable app URL         | https://wan-audio-magical-baseball.trycloudflare.com/?watch=dw-english                         | Opens the app and selects this channel; temporary tunnel hostname |
+| Player library            | `hls.js` **1.7.3**, installed from the lockfile                                                | HLS playback in supported browsers                                |
 
 The official DW page was fetched separately and contained this exact master URL. See [official source evidence](evidence/dw-english/official-link.json). Access to a public endpoint is an availability observation, not a redistribution license or uptime commitment.
 
@@ -57,13 +57,13 @@ The Cloudflare tunnel carries the website's static assets. Broadcaster video req
 
 The master is UTF-8 HLS playlist text, not a video file. Its `EXT-X-STREAM-INF` entries describe selectable renditions. In the captured response there were ten variant entries: five qualities, each offered through two alternate provider paths (`2015525` and `2015525-b`). These are not ten different channels.
 
-| Quality | Dimensions | Advertised average bandwidth | Advertised peak bandwidth | Frame rate |
-| --- | --- | --- | --- | --- |
-| 270p | 480 × 270 | 884,428 bit/s | 1,061,313 bit/s | 50 fps |
-| 360p | 640 × 360 | 1,384,428 bit/s | 1,661,313 bit/s | 50 fps |
-| 540p | 960 × 540 | 1,784,428 bit/s | 2,141,313 bit/s | 50 fps |
-| 720p | 1280 × 720 | 3,384,428 bit/s | 4,061,313 bit/s | 50 fps |
-| 1080p | 1920 × 1080 | 5,184,428 bit/s | 6,221,313 bit/s | 50 fps |
+| Quality | Dimensions  | Advertised average bandwidth | Advertised peak bandwidth | Frame rate |
+| ------- | ----------- | ---------------------------- | ------------------------- | ---------- |
+| 270p    | 480 × 270   | 884,428 bit/s                | 1,061,313 bit/s           | 50 fps     |
+| 360p    | 640 × 360   | 1,384,428 bit/s              | 1,661,313 bit/s           | 50 fps     |
+| 540p    | 960 × 540   | 1,784,428 bit/s              | 2,141,313 bit/s           | 50 fps     |
+| 720p    | 1280 × 720  | 3,384,428 bit/s              | 4,061,313 bit/s           | 50 fps     |
+| 1080p   | 1920 × 1080 | 5,184,428 bit/s              | 6,221,313 bit/s           | 50 fps     |
 
 These are manifest declarations, not measured per-viewer throughput. The master also advertises English WebVTT subtitle groups. The app does not implement a custom subtitle selector.
 
@@ -71,11 +71,11 @@ The sampled quality playlist contained 308 segments totaling **1,800 seconds**, 
 
 ### HTTP and segment measurements
 
-| Resource | HTTP status | Content type | CORS | Cache policy |
-| --- | --- | --- | --- | --- |
-| Master | 200 | `application/vnd.apple.mpegurl` | `Access-Control-Allow-Origin: *` | `max-age=0, no-cache, no-store` |
-| Quality playlist | 200 | `application/vnd.apple.mpegurl` | `*` | `max-age=0, no-cache, no-store` |
-| Sampled segment | 200 | `video/MP2T` | `*` | `public, max-age=1800` |
+| Resource         | HTTP status | Content type                    | CORS                             | Cache policy                    |
+| ---------------- | ----------- | ------------------------------- | -------------------------------- | ------------------------------- |
+| Master           | 200         | `application/vnd.apple.mpegurl` | `Access-Control-Allow-Origin: *` | `max-age=0, no-cache, no-store` |
+| Quality playlist | 200         | `application/vnd.apple.mpegurl` | `*`                              | `max-age=0, no-cache, no-store` |
+| Sampled segment  | 200         | `video/MP2T`                    | `*`                              | `public, max-age=1800`          |
 
 The requests included our public site's `Origin` header. Browser playback was verified separately. No login, cookie, bearer token, signed query parameter, or decryption key was required by the sampled requests. This says nothing about other channels, future policy, or geographic availability.
 
@@ -92,12 +92,12 @@ A temporary sample of one latest 270p segment was inspected with `ffprobe`, then
 
 Two media playlist responses, 8.38 seconds apart, showed:
 
-| Measurement | First | Second |
-| --- | --- | --- |
-| Media sequence | 298850368 | 298850369 |
-| Final segment sequence | 298850675 | 298850676 |
-| Window length | 1,800 seconds | 1,800 seconds |
-| `EXT-X-ENDLIST` present | No | No |
+| Measurement             | First         | Second        |
+| ----------------------- | ------------- | ------------- |
+| Media sequence          | 298850368     | 298850369     |
+| Final segment sequence  | 298850675     | 298850676     |
+| Window length           | 1,800 seconds | 1,800 seconds |
+| `EXT-X-ENDLIST` present | No            | No            |
 
 The leading sequence advanced and new media appeared while the oldest media left the window. This supports an actively updating live delivery stream. An HTTP 200 master response alone would not establish this; child playlists or segments can still fail.
 
